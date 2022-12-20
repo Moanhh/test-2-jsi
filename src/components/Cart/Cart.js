@@ -10,11 +10,11 @@ const Cart = (props) => {
   
 
   class Node {
-    constructor(element, index) {
+    constructor(val) {
         //Node is class containing main data members (name, age, images - covered in React components), and Prev and Next - linking to another Node
-        // this.head = null;
-        this.tail = null;
-        this.element = element;
+        this.prev = null;
+        this.next = null;
+        this.val = val;
         // this.index = index;
     }
 }
@@ -23,29 +23,30 @@ class DoublyLinkedList {
   constructor() {
       this.head = null;
       this.tail = null;
-  }
-  addItem(element) {
-
-      const newNode = super.addItem(element)
-
-      const prevElement = super.getElementAt(this.size()-1);
-      newNode.prev = prevElement || null;
-      this.tail = newNode;
-      // if (this.head === null) {
-      //     this.head = newNode;
-      //     this.tail = newNode;
-      // } else {
-      //     //Adding new Node to the end of the list
-      //     this.tail.next = newNode;
-      //     newNode.prev = this.tail;
-      //     this.tail = newNode;
-      // }
+      this.length = 0;
   }
 
-  remove() {
-    this.tail = null;
+addItem(val) {
+  let node = new Node(val) ;
+  if (!this.head) {
+    this.head = node ;
+    this.tail = node;
+   
+  } else {
+    let temp = this.tail;
+    this.tail = node ;
+    node.prev = temp;
+    temp.next = node;
+
   }
+  this.length++;
+  return this
+
 }
+}
+
+ 
+  
 
   //TODO: Now we are having this carCtx to be main dataStructure, Now change to Doubly Linked List. Remember, if there is no Doubly Linked List, your answer will not be counted
   const cartCtx = useContext(CartContext);
@@ -71,8 +72,8 @@ class DoublyLinkedList {
           name={item.name}
           amount={item.amount}
           price={item.price}
-          onRemove={doublyLinkedList.remove}
-          onAdd={doublyLinkedList.addItem}
+          onRemove={doublyLinkedList.remove(new Node(),0)}
+          onAdd={doublyLinkedList.addItem(1)}
         />
       ))}
     </ul>
